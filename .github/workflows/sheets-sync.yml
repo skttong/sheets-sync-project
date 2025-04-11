@@ -1,13 +1,14 @@
 name: Sync Google Sheets
 
 on:
-  workflow_dispatch:  # กดรันเอง
+  workflow_dispatch:        # กดรันเองได้
   schedule:
-    - cron: '*/5 * * * *'  # รันทุก 5 นาที (เวลา UTC)
+    - cron: '0 0 * * *'     # รันทุกวันตอนเที่ยงคืน (UTC)
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -24,3 +25,6 @@ jobs:
         run: python sync_sheets.py
         env:
           SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+
+      - name: Notify on Success
+        run: echo "✅ Google Sheets sync completed successfully." >> $GITHUB_STEP_SUMMARY
