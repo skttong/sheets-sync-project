@@ -1,12 +1,10 @@
-name: Sync Google Sheets A to B
+name: Sync Google Sheets
 
 on:
-  schedule:
-    - cron: '0 2 * * *'  # ทุกวันเวลา 09:00 (ไทย)
-  workflow_dispatch:
+  workflow_dispatch:  # กดรันเอง
 
 jobs:
-  sync-sheets:
+  sync:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -18,9 +16,9 @@ jobs:
           python-version: 3.11
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install gspread google-auth
 
       - name: Run sync script
+        run: python sync_sheets.py
         env:
           SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-        run: python sync_sheets.py
